@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-
+// Remove the line that tries to parse credentials from env variable
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -141,29 +141,11 @@ const upload = multer({ storage: storage });
 // Initialize Google Vision client with proper auth
 let visionClient;
 try {
-    if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-        visionClient = new ImageAnnotatorClient({
-            credentials: {
-                type: 'service_account',
-                project_id: process.env.GOOGLE_PROJECT_ID,
-                private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-                private_key: process.env.GOOGLE_PRIVATE_KEY,
-                client_email: process.env.GOOGLE_CLIENT_EMAIL,
-                client_id: process.env.GOOGLE_CLIENT_ID,
-                auth_uri: process.env.GOOGLE_AUTH_URI,
-                token_uri: process.env.GOOGLE_TOKEN_URI,
-                auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
-                client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
-                universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN
-            }
-        });
-        console.log("Vision client initialized with environment variable credentials");
-    } else {
-        visionClient = new ImageAnnotatorClient({
-            keyFilename: './final.json'
-        });
-        console.log("Vision client initialized with local credentials file");
-    }
+    // Use the local credentials file directly
+    visionClient = new ImageAnnotatorClient({
+        keyFilename: path.join(__dirname, 'final.json')
+    });
+    console.log("Vision client initialized with local credentials file");
 } catch (error) {
     console.error("Failed to initialize Vision client:", error.message);
 }

@@ -1,16 +1,3 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyCdHG9stEGsuR_jh5pzCGxt_vNEZyvRbUo",
-    authDomain: "timepass-a7f88.firebaseapp.com",
-    projectId: "timepass-a7f88",
-    storageBucket: "timepass-a7f88.firebasestorage.app",
-    messagingSenderId: "129854315522",
-    appId: "1:129854315522:web:c9de1b24221d728d7a1b1b",
-    measurementId: "G-D9LRGTSCDS"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
 // Update navigation based on authentication status
 function updateNavigation() {
     const username = localStorage.getItem('username');

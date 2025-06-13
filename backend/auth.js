@@ -1,4 +1,8 @@
-// DOM Elements
+// Change this line
+const API_URL = 'http://localhost:3000';
+
+// To this
+const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : process.env.API_URL || 'https://your-backend-url.vercel.app';// DOM Elements
 const loginForm = document.getElementById('login-form');
 const signupForm = document.getElementById('signup-form');
 const loginTab = document.getElementById('login-tab');
@@ -251,3 +255,6 @@ function logoutUser() {
 
 // Export the function for use in other files
 window.logoutUser = logoutUser;
+// This file is not needed as authentication is handled by server.js
+// The frontend auth.js handles the client-side authentication logic
+// This file can be safely removed or replaced with proper backend authentication middleware

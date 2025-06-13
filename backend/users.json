@@ -4,5 +4,11 @@
     "name": "Sundaramadhuram",
     "email": "madhu@gmail.com",
     "password": "$2a$10$Q0lWfOsKSljT1br/gUAI0u6A/lrSR/SjSe2T3ntW21R4uyy3w9Vay"
+  },
+  {
+    "id": 2,
+    "name": "chikorita",
+    "email": "chiko@gmail.com",
+    "password": "$2a$10$n8x819lGtPE5p7dNgn5vgO8l9U1/WT6vV/0YYEjaWeakZleVEBpb6"
   }
 ]

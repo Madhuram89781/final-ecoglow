@@ -5,8 +5,8 @@ const loginForm = document.getElementById('login-form');
 const signupForm = document.getElementById('signup-form');
 const authMessage = document.getElementById('auth-message');
 
-// Backend API URL
-const API_URL = process.env.API_URL || 'http://localhost:3000';
+// Backend API URL - Fix: Remove process.env which doesn't work in browser JS
+const API_URL = 'http://localhost:3000';
 
 // Tab switching functionality
 loginTab.addEventListener('click', () => {

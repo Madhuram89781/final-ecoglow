@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EcoGlow - Waste Management Application
 
 ## Overview
@@ -78,3 +79,7 @@ EcoGlow is a waste management application that helps users identify recyclable i
 - Never commit sensitive credentials to your repository
 - Use environment variables for all sensitive information
 - Ensure your JWT secret is strong and unique# sample-ecoglow
+=======
+# final-ecoglow
+>>>>>>> 6f4dd2d29a2d91156691f4cb798435ef57d48aa9
+# sample-ecoglow

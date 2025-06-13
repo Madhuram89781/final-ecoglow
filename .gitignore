@@ -1,3 +1,7 @@
 node_modules/
 .env
 .vercel
+backend/final.json
+*.json
+credentials.json
+service-account*.json

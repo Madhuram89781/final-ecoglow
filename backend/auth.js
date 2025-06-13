@@ -1,260 +1,179 @@
-// Change this line
-const API_URL = 'http://localhost:3000';
+/**
+ * Authentication utility functions for the backend server
+ */
 
-// To this
-const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : process.env.API_URL || 'https://your-backend-url.vercel.app';// DOM Elements
-const loginForm = document.getElementById('login-form');
-const signupForm = document.getElementById('signup-form');
-const loginTab = document.getElementById('login-tab');
-const signupTab = document.getElementById('signup-tab');
-const authMessage = document.getElementById('auth-message');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const path = require('path');
 
-// Google and Facebook auth providers
-const googleLoginBtn = document.getElementById('google-login');
-const facebookLoginBtn = document.getElementById('facebook-login');
+// Path to users.json file
+const usersFilePath = path.join(__dirname, 'users.json');
 
-// Initialize auth providers
-const googleProvider = new firebase.auth.GoogleAuthProvider();
-const facebookProvider = new firebase.auth.FacebookAuthProvider();
-
-// Tab switching functionality
-if (loginTab && signupTab) {
-    loginTab.addEventListener('click', () => {
-        loginTab.classList.add('text-green-600', 'border-green-600');
-        loginTab.classList.remove('text-gray-500');
-        signupTab.classList.remove('text-green-600', 'border-green-600');
-        signupTab.classList.add('text-gray-500');
-        loginForm.classList.remove('hidden');
-        signupForm.classList.add('hidden');
-
-        // GSAP animation
-        gsap.from(loginForm, {
-            opacity: 0,
-            y: 10,
-            duration: 0.3,
-            ease: 'power2.out'
-        });
-    });
-
-    signupTab.addEventListener('click', () => {
-        signupTab.classList.add('text-green-600', 'border-green-600');
-        signupTab.classList.remove('text-gray-500');
-        loginTab.classList.remove('text-green-600', 'border-green-600');
-        loginTab.classList.add('text-gray-500');
-        signupForm.classList.remove('hidden');
-        loginForm.classList.add('hidden');
-
-        // GSAP animation
-        gsap.from(signupForm, {
-            opacity: 0,
-            y: 10,
-            duration: 0.3,
-            ease: 'power2.out'
-        });
-    });
-}
-
-// Handle login form submission
-if (loginForm) {
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-
-        try {
-            showMessage('Signing in...', 'text-green-600');
-
-            await firebase.auth().signInWithEmailAndPassword(email, password);
-
-            showMessage('Login successful! Redirecting...', 'text-green-600');
-
-            // Redirect to homepage after successful login
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-
-        } catch (error) {
-            console.error('Login error:', error);
-            showMessage(error.message, 'text-red-600');
-        }
-    });
-}
-
-// Handle signup form submission
-if (signupForm) {
-    signupForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById('signup-name').value;
-        const email = document.getElementById('signup-email').value;
-        const password = document.getElementById('signup-password').value;
-        const confirmPassword = document.getElementById('signup-confirm-password').value;
-
-        // Validate passwords match
-        if (password !== confirmPassword) {
-            showMessage('Passwords do not match', 'text-red-600');
-            return;
-        }
-
-        try {
-            showMessage('Creating your account...', 'text-green-600');
-
-            // Create user with email and password
-            const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-
-            // Update user profile with name
-            await userCredential.user.updateProfile({
-                displayName: name
-            });
-
-            showMessage('Account created successfully! Redirecting...', 'text-green-600');
-
-            // Redirect to homepage after successful signup
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-
-        } catch (error) {
-            console.error('Signup error:', error);
-            showMessage(error.message, 'text-red-600');
-        }
-    });
-}
-
-// Google Sign In
-if (googleLoginBtn) {
-    googleLoginBtn.addEventListener('click', async () => {
-        try {
-            showMessage('Signing in with Google...', 'text-green-600');
-
-            await firebase.auth().signInWithPopup(googleProvider);
-
-            showMessage('Login successful! Redirecting...', 'text-green-600');
-
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-
-        } catch (error) {
-            console.error('Google sign-in error:', error);
-            showMessage(error.message, 'text-red-600');
-        }
-    });
-}
-
-// Facebook Sign In
-if (facebookLoginBtn) {
-    facebookLoginBtn.addEventListener('click', async () => {
-        try {
-            showMessage('Signing in with Facebook...', 'text-green-600');
-
-            await firebase.auth().signInWithPopup(facebookProvider);
-
-            showMessage('Login successful! Redirecting...', 'text-green-600');
-
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-
-        } catch (error) {
-            console.error('Facebook sign-in error:', error);
-            showMessage(error.message, 'text-red-600');
-        }
-    });
-}
-
-// Helper function to show auth messages
-function showMessage(message, className) {
-    if (authMessage) {
-        authMessage.textContent = message;
-        authMessage.className = `mt-4 text-center ${className} fade-in`;
-        authMessage.classList.remove('hidden');
-    }
-}
-
-// Check auth state on page load
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        console.log('User is signed in:', user.displayName);
-    } else {
-        console.log('No user is signed in');
-    }
-});
-// Add this near the top of auth.js
-// Get the redirect URL from query parameters if it exists
-function getRedirectUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirect = urlParams.get('redirect');
-    if (redirect) {
-        return redirect + '.html';
-    }
-    return 'index.html';
-}
-
-// Modify the login completion handler to use the redirect URL
-// In your login form submit handler, change the redirect line:
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-
+/**
+ * Load users from the JSON file
+ * @returns {Array} Array of user objects
+ */
+const loadUsers = () => {
     try {
-        showMessage('Signing in...', 'text-green-600');
-
-        await firebase.auth().signInWithEmailAndPassword(email, password);
-
-        showMessage('Login successful! Redirecting...', 'text-green-600');
-
-        // Redirect to specified page or homepage after successful login
-        const redirectUrl = getRedirectUrl();
-        // Change your redirect code in auth.js to add source parameter
-        setTimeout(() => {
-            const redirectUrl = getRedirectUrl();
-            window.location.href = redirectUrl + (redirectUrl.includes('?') ? '&' : '?') + 'source=login';
-        }, 1500);
-
+        if (fs.existsSync(usersFilePath)) {
+            const userData = fs.readFileSync(usersFilePath, 'utf8');
+            return JSON.parse(userData);
+        }
+        return [];
     } catch (error) {
-        console.error('Login error:', error);
-        showMessage(error.message, 'text-red-600');
+        console.error('Error loading users:', error);
+        return [];
     }
-});
+};
 
-// Do the same for the signup form handler and the social login handlers
-// For example, in the Google login handler:
-googleLoginBtn.addEventListener('click', async () => {
+/**
+ * Save users to the JSON file
+ * @param {Array} users - Array of user objects
+ */
+const saveUsers = (users) => {
     try {
-        showMessage('Signing in with Google...', 'text-green-600');
-
-        await firebase.auth().signInWithPopup(googleProvider);
-
-        showMessage('Login successful! Redirecting...', 'text-green-600');
-
-        const redirectUrl = getRedirectUrl();
-        setTimeout(() => {
-            window.location.href = redirectUrl;
-        }, 1500);
-
+        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
     } catch (error) {
-        console.error('Google sign-in error:', error);
-        showMessage(error.message, 'text-red-600');
+        console.error('Error saving users:', error);
     }
-});
+};
 
-// Do the same for Facebook login
-// Handle logout
-function logoutUser() {
-    firebase.auth().signOut().then(() => {
-        console.log('User signed out');
-        window.location.href = 'index.html';
-    }).catch((error) => {
-        console.error('Sign out error:', error);
-    });
-}
+/**
+ * Create a new user account
+ * @param {string} name - User's name
+ * @param {string} email - User's email
+ * @param {string} password - User's password
+ * @returns {Object} Result object with success status and message
+ */
+const createUser = async (name, email, password) => {
+    try {
+        const users = loadUsers();
+        
+        // Check if user already exists
+        if (users.find(user => user.email === email)) {
+            return { success: false, message: 'User already exists' };
+        }
+        
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Create new user
+        const newUser = {
+            id: users.length + 1,
+            name,
+            email,
+            password: hashedPassword
+        };
+        
+        users.push(newUser);
+        saveUsers(users);
+        
+        return { success: true, message: 'User created successfully' };
+    } catch (error) {
+        console.error('Error creating user:', error);
+        return { success: false, message: 'Error creating user' };
+    }
+};
 
-// Export the function for use in other files
-window.logoutUser = logoutUser;
-// This file is not needed as authentication is handled by server.js
-// The frontend auth.js handles the client-side authentication logic
-// This file can be safely removed or replaced with proper backend authentication middleware
+/**
+ * Authenticate a user and generate JWT token
+ * @param {string} email - User's email
+ * @param {string} password - User's password
+ * @returns {Object} Result object with token and user info if successful
+ */
+const loginUser = async (email, password) => {
+    try {
+        const users = loadUsers();
+        
+        // Find user
+        const user = users.find(user => user.email === email);
+        if (!user) {
+            return { success: false, message: 'Invalid credentials' };
+        }
+        
+        // Check password
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return { success: false, message: 'Invalid credentials' };
+        }
+        
+        // Create token
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, name: user.name },
+            process.env.JWT_SECRET || (process.env.VERCEL ? null : 'your-secret-key'),
+            { expiresIn: '1h' }
+        );
+        
+        return { 
+            success: true, 
+            token, 
+            username: user.name 
+        };
+    } catch (error) {
+        console.error('Error logging in:', error);
+        return { success: false, message: 'Error logging in' };
+    }
+};
+
+/**
+ * Verify a JWT token
+ * @param {string} token - JWT token to verify
+ * @returns {Object} Decoded token payload if valid, null if invalid
+ */
+const verifyToken = (token) => {
+    try {
+        const decoded = jwt.verify(
+            token, 
+            process.env.JWT_SECRET || (process.env.VERCEL ? null : 'your-secret-key')
+        );
+        return decoded;
+    } catch (error) {
+        console.error('Token verification error:', error);
+        return null;
+    }
+};
+
+/**
+ * Middleware to authenticate requests
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ */
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN format
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Authentication required' });
+    }
+    
+    const user = verifyToken(token);
+    if (!user) {
+        return res.status(403).json({ message: 'Invalid or expired token' });
+    }
+    
+    req.user = user;
+    next();
+};
+
+/**
+ * Get user by ID
+ * @param {number} userId - User ID to find
+ * @returns {Object|null} User object if found, null if not found
+ */
+const getUserById = (userId) => {
+    const users = loadUsers();
+    return users.find(user => user.id === userId) || null;
+};
+
+// Export authentication functions
+module.exports = {
+    loadUsers,
+    saveUsers,
+    createUser,
+    loginUser,
+    verifyToken,
+    authenticateToken,
+    getUserById
+};

@@ -13,8 +13,8 @@ const compostingSpan = document.getElementById('composting');
 const skincareSpan = document.getElementById('skincare');
 const recyclingSpan = document.getElementById('recycling');
 
-// Backend API URL - Change this to match your server
-const API_URL = 'http://localhost:3000';
+// Backend API URL - Dynamically set based on environment
+const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : process.env.API_URL || 'https://your-backend-url.vercel.app';
 
 // Check authentication status when page loads
 document.addEventListener('DOMContentLoaded', () => {

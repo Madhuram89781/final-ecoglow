@@ -30,54 +30,21 @@ process.emitWarning = function(warning, type, code, ctor) {
 };
 process._originalEmitWarning = process.emitWarning;
 
-// Path to users.json file
-const usersFilePath = path.join(__dirname, 'users.json');
-
-// Load users from file or create empty array
-let users = [];
-try {
-    if (fs.existsSync(usersFilePath)) {
-        const userData = fs.readFileSync(usersFilePath, 'utf8');
-        users = JSON.parse(userData);
-    }
-} catch (error) {
-    console.error('Error loading users:', error);
-}
-
-// Function to save users to file
-const saveUsers = () => {
-    try {
-        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-    } catch (error) {
-        console.error('Error saving users:', error);
-    }
-};
+// Import authentication functions from auth.js
+const auth = require('./auth');
 
 // Authentication endpoints
 app.post('/auth/signup', async (req, res) => {
     try {
         const { name, email, password } = req.body;
-
-        // Check if user already exists
-        if (users.find(user => user.email === email)) {
-            return res.status(400).json({ message: 'User already exists' });
+        
+        const result = await auth.createUser(name, email, password);
+        
+        if (result.success) {
+            res.status(201).json({ message: result.message });
+        } else {
+            res.status(400).json({ message: result.message });
         }
-
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create new user
-        const user = {
-            id: users.length + 1,
-            name,
-            email,
-            password: hashedPassword
-        };
-
-        users.push(user);
-        saveUsers(); // Save to file
-
-        res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
         console.error('Signup error:', error);
         res.status(500).json({ message: 'Error creating user' });
@@ -87,53 +54,29 @@ app.post('/auth/signup', async (req, res) => {
 app.post('/auth/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-
-        // Find user
-        const user = users.find(user => user.email === email);
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+        
+        const result = await auth.loginUser(email, password);
+        
+        if (result.success) {
+            res.json({ token: result.token, username: result.username });
+        } else {
+            res.status(401).json({ message: result.message });
         }
-
-        // Check password
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (!validPassword) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        // Create token
-        const token = jwt.sign(
-            { userId: user.id, email: user.email, name: user.name },
-            process.env.JWT_SECRET || 'your-secret-key',
-            { expiresIn: '1h' }
-        );
-
-        res.json({ token, username: user.name });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Error logging in' });
     }
 });
 
-// Middleware to verify JWT token
-const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN format
-    
-    if (!token) {
-        return res.status(401).json({ message: 'Authentication required' });
-    }
-    
-    jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key', (err, user) => {
-        if (err) {
-            return res.status(403).json({ message: 'Invalid or expired token' });
-        }
-        req.user = user;
-        next();
-    });
-};
+// Use the authenticateToken middleware from auth.js
+const authenticateToken = auth.authenticateToken;
 
-// Existing code for Google Vision and other features
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || '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' });
+// Initialize Groq API client
+const groq = new Groq({ 
+    apiKey: process.env.GROQ_API_KEY || 
+    // Fallback key for development only - should be removed in production
+    (process.env.VERCEL ? null : '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')
+});
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -141,11 +84,31 @@ const upload = multer({ storage: storage });
 // Initialize Google Vision client with proper auth
 let visionClient;
 try {
-    // Use the local credentials file directly
-    visionClient = new ImageAnnotatorClient({
-        keyFilename: path.join(__dirname, 'final.json')
-    });
-    console.log("Vision client initialized with local credentials file");
+    // Check if running in production (Vercel)
+    if (process.env.VERCEL) {
+        // Use environment variables for credentials in production
+        const credentials = {
+            type: 'service_account',
+            project_id: process.env.GOOGLE_PROJECT_ID,
+            private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            client_email: process.env.GOOGLE_CLIENT_EMAIL,
+            client_id: process.env.GOOGLE_CLIENT_ID,
+            auth_uri: process.env.GOOGLE_AUTH_URI,
+            token_uri: process.env.GOOGLE_TOKEN_URI,
+            auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
+            client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
+            universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN
+        };
+        visionClient = new ImageAnnotatorClient({ credentials });
+        console.log("Vision client initialized with environment variables");
+    } else {
+        // Use the local credentials file for development
+        visionClient = new ImageAnnotatorClient({
+            keyFilename: path.join(__dirname, 'final.json')
+        });
+        console.log("Vision client initialized with local credentials file");
+    }
 } catch (error) {
     console.error("Failed to initialize Vision client:", error.message);
 }

@@ -1,0 +1,11 @@
+{
+  "name": "eco-glow-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Eco Glow application",
+  "scripts": {
+    "start": "npx http-server . -p 3001"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

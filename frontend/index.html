@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Glow - Turning Waste into Wonder</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+</head>
+<body class="bg-green-50 montserrat  overflow-x-hidden">
+    <!-- Navigation -->
+    <header class="fixed w-full z-50">
+        <nav class="bg-gradient-to-r from-green-700 to-green-500 text-white shadow-md transition-all duration-300">
+            <div class="container mx-auto py-4 px-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <i class="fas fa-leaf text-2xl mr-3 animate-pulse"></i>
+                        <h1 class="text-3xl font-bold">Eco Glow</h1>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-6 text-lg">
+                        <a href="index.html" class="nav-link active">Home</a>
+                        <a href="scan.html" class="nav-link">Scan</a>
+                        <a href="#features" class="nav-link">Features</a>
+                        <a href="#contact" class="nav-link">Contact</a>
+                        <a href="login.html" class="bg-white text-green-700 px-4 py-2 rounded-full hover:bg-green-100 transition-all">Login</a>
+                    </div>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-white focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-green-600 transition-all duration-300">
+                <div class="container mx-auto px-6 py-3 flex flex-col space-y-4">
+                    <a href="index.html" class="text-white py-2">Home</a>
+                    <a href="scan.html" class="text-white py-2">Scan</a>
+                    <a href="#features" class="text-white py-2">Features</a>
+                    <a href="#contact" class="text-white py-2">Contact</a>
+                    <a href="login.html" class="bg-white text-green-700 px-4 py-2 rounded-full text-center">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-20">
+        <div class="hero-bg absolute inset-0 z-0"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-5xl md:text-6xl font-bold text-green-800 mb-6 hero-title">
+                        Turning <span class="text-green-600">Waste</span> into <span class="text-green-600">Wonder</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-700 mb-8 hero-subtitle">
+                        Discover how your everyday organic waste can transform into valuable resources for your garden and skincare routine.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="scan.html" class="relative z-50 bg-green-600 text-white text-lg font-semibold px-8 py-4 rounded-full hover:bg-green-700">
+                            <i class="fas fa-search mr-2"></i> Start Scanning
+                        </a>
+                        <a href="#overview" class=" border-2 border-green-600 text-green-700 text-lg font-semibold px-8 py-4 rounded-full hover:bg-green-600 hover:text-white">
+                            <i class="fas fa-info-circle mr-2"></i> Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 hero-image">
+                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1313&q=80" 
+                         alt="Eco-friendly composting" 
+                         class="rounded-lg shadow-2xl w-full">
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center z-10">
+            <a href="#overview" class="text-green-700 text-2xl animate-bounce">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 section-intro">
+                <h2 class="text-4xl font-bold text-green-800 mb-4">Our Mission</h2>
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+                    Millions of tons of organic waste are discarded yearly, contributing to pollution and methane emissions. 
+                    Eco Glow transforms this underutilized resource into compost and innovative skincare products.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-8 shadow-lg transform hover:-translate-y-2 transition-all feature-card">
+                    <div class="text-green-600 text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-recycle"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Reduce Waste</h3>
+                    <p class="text-gray-700">
+                        We aim to divert organic waste from landfills by providing practical, easy-to-implement 
+                        solutions for every household.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-8 shadow-lg transform hover:-translate-y-2 transition-all feature-card">
+                    <div class="text-green-600 text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Enrich Gardens</h3>
+                    <p class="text-gray-700">
+                        Turn kitchen scraps into nutrient-rich compost that will help your plants thrive and create 
+                        a sustainable ecosystem in your garden.
+                    </p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-8 shadow-lg transform hover:-translate-y-2 transition-all feature-card">
+                    <div class="text-green-600 text-4xl mb-4 flex justify-center">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Natural Skincare</h3>
+                    <p class="text-gray-700">
+                        Discover how common organic waste items contain valuable compounds that can become 
+                        part of your natural skincare routine.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-green-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-green-800 mb-16 text-center">What You Can Find on This Website</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg feature-card">
+                    <div class="text-green-600 text-4xl mb-6 flex justify-center">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Waste Analysis Tool</h3>
+                    <p class="text-gray-700 mb-6">
+                        Enter or upload images of organic waste to identify its type and get tailored
+                        suggestions for composting and skincare applications.
+                    </p>
+                    <a href="scan.html" class="block text-center text-green-600 hover:text-green-800 transition-all">
+                        Try It Now <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg feature-card">
+                    <div class="text-green-600 text-4xl mb-6 flex justify-center">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Practical Guidance</h3>
+                    <p class="text-gray-700 mb-6">
+                        Step-by-step instructions on how to turn your waste into valuable resources
+                        like compost or beauty products.
+                    </p>
+                    <a href="#" class="block text-center text-green-600 hover:text-green-800 transition-all">
+                        View Guides <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg feature-card">
+                    <div class="text-green-600 text-4xl mb-6 flex justify-center">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Program Insights</h3>
+                    <p class="text-gray-700 mb-6">
+                        Learn about Eco Glow's mission to reduce landfill waste and methane emissions
+                        through innovative solutions.
+                    </p>
+                    <a href="#" class="block text-center text-green-600 hover:text-green-800 transition-all">
+                        Learn More <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg feature-card">
+                    <div class="text-green-600 text-4xl mb-6 flex justify-center">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4 text-center">Engagement Opportunities</h3>
+                    <p class="text-gray-700 mb-6">
+                        Connect with us via the contact form to join our efforts or share your ideas
+                        for sustainable practices.
+                    </p>
+                    <a href="#contact" class="block text-center text-green-600 hover:text-green-800 transition-all">
+                        Get Involved <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-green-800 mb-16 text-center">How to Use Eco Glow</h2>
+            
+            <div class="timeline-container bg-white p-10 rounded-xl text-center shadow-lg">
+                <div class="timeline-item flex items-center justify-center mb-10">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-2xl font-semibold text-green-700">Step 1: Prepare Your Waste</h3>
+                        <p class="text-gray-700 mt-4">Take a clear photo of your organic waste or note its name
+                        (e.g., banana peels).</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-2xl font-semibold text-green-700">Step 2: Enter or Upload</h3>
+                        <p class="text-gray-700 mt-4">Type the waste name or drag your photo into the drop zone
+                        in the Scan tab.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-line"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-2xl font-semibold text-green-700">Step 3: View Results</h3>
+                        <p class="text-gray-700 mt-4">See the waste type and suggestions for composting and
+                        skincare uses.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h3 class="text-2xl font-semibold text-green-700">Step 4: Take Action</h3>
+                        <p class="text-gray-700 mt-4">Use the suggestions to repurpose your waste or contact us
+                        to get involved!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-green-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-green-800 mb-16 text-center">Get in Touch</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-semibold text-green-800 mb-4">Contact Information</h3>
+                        <div class="space-y-4">
+                            <p class="flex items-center text-gray-700">
+                                <i class="fas fa-map-marker-alt text-green-600 w-6"></i>
+                                123 Eco Street, Green City, 534245
+                            </p>
+                            <p class="flex items-center text-gray-700">
+                                <i class="fas fa-phone text-green-600 w-6"></i>
+                                +91 8184863936
+                            </p>
+                            <p class="flex items-center text-gray-700">
+                                <i class="fas fa-envelope text-green-600 w-6"></i>
+                                info@eco-glow.com
+                            </p>
+                            <p class="flex items-start text-gray-700 mt-4 italic">
+                                <i class="fas fa-quote-left text-green-600 w-6 mt-1"></i>
+                                <span class="flex-1">ecoglow isn't just a website-it's a movement toward a greener,healthier future</span>
+                            </p>
+                            <div class="flex space-x-4 mt-6">
+                                <a href="#" class="text-green-600 hover:text-green-800"><i class="fab fa-facebook-f text-2xl"></i></a>
+                                <a href="#" class="text-green-600 hover:text-green-800"><i class="fab fa-twitter text-2xl"></i></a>
+                                <a href="#" class="text-green-600 hover:text-green-800"><i class="fab fa-instagram text-2xl"></i></a>
+                                <a href="#" class="text-green-600 hover:text-green-800"><i class="fab fa-linkedin-in text-2xl"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold text-green-800 mb-2">Office Hours</h4>
+                        <p class="text-gray-700">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                        <p class="text-gray-700">Saturday: 10:00 AM - 4:00 PM</p>
+                        <p class="text-gray-700">Sunday: Closed</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-semibold text-green-800 mb-4">Send us a Message</h3>
+                    <form class="space-y-4" action="mailto:madhuramsundara5@gmail.com" method="post" enctype="text/plain">
+                        <div>
+                            <label for="name" class="block text-gray-700 mb-2">Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="leaves-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromLogin = urlParams.get('source') === 'login';
+            
+            if (!fromLogin) {
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (!user && window.location.pathname.includes('scan.html')) {
+                        window.location.href = 'login.html?redirect=scan';
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- Main JS -->
+    <script src="main.js"></script>
+</body>
+</html>

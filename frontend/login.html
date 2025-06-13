@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Eco Glow</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+</head>
+<body class="bg-green-50 montserrat">
+    <!-- Navigation -->
+    <header class="fixed w-full z-50">
+        <nav class="bg-gradient-to-r from-green-700 to-green-500 text-white shadow-md transition-all duration-300">
+            <div class="container mx-auto py-4 px-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <i class="fas fa-leaf text-2xl mr-3 animate-pulse"></i>
+                        <h1 class="text-3xl font-bold">Eco Glow</h1>
+                    </div>
+                    <div class="hidden md:flex items-center space-x-6 text-lg">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="scan.html" class="nav-link">Scan</a>
+                        <a href="index.html#features" class="nav-link">Features</a>
+                        <a href="index.html#contact" class="nav-link">Contact</a>
+                        <a href="login.html" class="bg-white text-green-700 px-4 py-2 rounded-full hover:bg-green-100 transition-all">Login</a>
+                    </div>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-white focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-green-600 transition-all duration-300">
+                <div class="container mx-auto px-6 py-3 flex flex-col space-y-4">
+                    <a href="index.html" class="text-white py-2">Home</a>
+                    <a href="scan.html" class="text-white py-2">Scan</a>
+                    <a href="index.html#features" class="text-white py-2">Features</a>
+                    <a href="index.html#contact" class="text-white py-2">Contact</a>
+                    <a href="login.html" class="bg-white text-green-700 px-4 py-2 rounded-full text-center">Login</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-24 min-h-screen flex flex-col items-center justify-center">
+        <div class="max-w-md w-full bg-white rounded-xl shadow-xl p-10 auth-container">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-green-800 mb-2">Welcome Back</h1>
+                <p class="text-gray-600">Sign in to your Eco Glow account</p>
+            </div>
+
+            <!-- Auth tabs -->
+            <div class="flex mb-8 border-b border-gray-200">
+                <button id="login-tab" class="flex-1 py-3 text-center text-green-600 border-b-2 border-green-600 font-medium">
+                    Login
+                </button>
+                <button id="signup-tab" class="flex-1 py-3 text-center text-gray-500 font-medium">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="flex flex-col space-y-6">
+                <div>
+                    <label for="login-email" class="block text-gray-700 mb-2">Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" id="login-email" class="input-field pl-10 pr-3 py-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="login-password" class="block text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="login-password" class="input-field pl-10 pr-3 py-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" type="checkbox" class="h-4 w-4 text-green-600 border-gray-300 rounded">
+                        <label for="remember-me" class="ml-2 block text-gray-700">Remember me</label>
+                    </div>
+                    <a href="#" class="text-green-600 hover:text-green-800">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-medium py-4 px-4 rounded-md hover:bg-green-700 transition-all">
+                    Login
+                </button>
+                <div class="relative flex py-4 items-center">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="flex-shrink mx-4 text-gray-600">Or continue with</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button type="button" id="google-login" class="flex items-center justify-center py-3 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition-all">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-6 h-6 mr-2">
+                        Google
+                    </button>
+                    <button type="button" id="facebook-login" class="flex items-center justify-center py-3 px-4 border border-gray-300 rounded-md hover:bg-gray-50 transition-all">
+                        <i class="fab fa-facebook-f text-blue-600 text-lg mr-2"></i>
+                        Facebook
+                    </button>
+                </div>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signup-form" class="hidden flex flex-col space-y-6">
+                <div>
+                    <label for="signup-name" class="block text-gray-700 mb-2">Full Name</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" id="signup-name" class="input-field pl-10 pr-3 py-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="John Doe" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="signup-email" class="block text-gray-700 mb-2">Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" id="signup-email" class="input-field pl-10 pr-3 py-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="signup-password" class="block text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="signup-password" class="input-field pl-10 pr-3 py-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="signup-confirm-password" class="block text-gray-700 mb-2">Confirm Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="signup-confirm-password" class="input-field pl-10 pr-3 py-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <input id="terms" type="checkbox" class="h-4 w-4 text-green-600 border-gray-300 rounded" required>
+                    <label for="terms" class="ml-2 block text-gray-700">I agree to the <a href="#" class="text-green-600 hover:text-green-800">Terms of Service</a> and <a href="#" class="text-green-600 hover:text-green-800">Privacy Policy</a></label>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-medium py-4 px-4 rounded-md hover:bg-green-700 transition-all">
+                    Create Account
+                </button>
+            </form>
+
+            <!-- Auth message area -->
+            <div id="auth-message" class="mt-4 text-center hidden"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- <footer class="bg-green-800 text-white py-10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center justify-center md:justify-start">
+                        <i class="fas fa-leaf text-2xl mr-3"></i>
+                        <h2 class="text-2xl font-bold">Eco Glow</h2>
+                    </div>
+                    <p class="mt-2 text-green-200 text-center md:text-left">Turning Organic Waste into Opportunity</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-green-200 hover:text-white transition-all">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-green-200 hover:text-white transition-all">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-green-200 hover:text-white transition-all">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-green-200 hover:text-white transition-all">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <hr class="border-green-600 my-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p>&copy; 2023 Eco Glow. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-green-200 hover:text-white transition-all">Privacy Policy</a>
+                    <a href="#" class="text-green-200 hover:text-white transition-all">Terms of Service</a>
+                    <a href="#" class="text-green-200 hover:text-white transition-all">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer> -->
+
+    <!-- Firebase App JS -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    
+    <!-- Main and Auth JS -->
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

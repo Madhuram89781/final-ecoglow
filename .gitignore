@@ -5,3 +5,6 @@ backend/final.json
 *.json
 credentials.json
 service-account*.json
+*.json
+credentials.json
+service-account*.json

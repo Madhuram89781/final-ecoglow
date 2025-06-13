@@ -28,12 +28,22 @@ EcoGlow is a waste management application that helps users identify recyclable i
 3. Create a `.env` file in the backend directory with the following variables:
    ```
    GROQ_API_KEY=your_groq_api_key
-   GOOGLE_APPLICATION_CREDENTIALS=./final.json
    PORT=3000
    JWT_SECRET=your_jwt_secret
+   
+   # Google Cloud Vision Credentials
+   GOOGLE_PROJECT_ID=your_project_id
+   GOOGLE_PRIVATE_KEY_ID=your_private_key_id
+   GOOGLE_PRIVATE_KEY="your_private_key_with_newlines_as_\n"
+   GOOGLE_CLIENT_EMAIL=your_client_email
+   GOOGLE_CLIENT_ID=your_client_id
+   GOOGLE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
+   GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token
+   GOOGLE_AUTH_PROVIDER_X509_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
+   GOOGLE_CLIENT_X509_CERT_URL=your_client_cert_url
+   GOOGLE_UNIVERSE_DOMAIN=googleapis.com
    ```
-4. Place your Google Cloud Vision API credentials in a file named `final.json` in the backend directory
-5. Start the backend server:
+4. Start the backend server:
    ```
    cd backend
    npm start

@@ -14,7 +14,7 @@ const skincareSpan = document.getElementById('skincare');
 const recyclingSpan = document.getElementById('recycling');
 
 // Backend API URL - Dynamically set based on environment
-const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : process.env.API_URL || 'https://your-backend-url.vercel.app';
+const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
 
 // Check authentication status when page loads
 document.addEventListener('DOMContentLoaded', () => {

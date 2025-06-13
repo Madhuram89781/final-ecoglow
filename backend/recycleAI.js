@@ -1,5 +1,9 @@
 const Groq = require("groq-sdk");
-const groq = new Groq({ apiKey: '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' });
+require('dotenv').config();
+
+const groq = new Groq({ 
+  apiKey: process.env.GROQ_API_KEY || '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' 
+});
 
 async function askgroq(itemName) {
   let prompt = `Analyze the given object, which is ${itemName}, and determine its reuse and recycle potential, specifying the type of waste it falls under (e.g., electronic, plastic, metal, organic, hazardous). Estimate the approximate cost savings and environmental benefits (e.g., CO₂ emissions reduced, water saved, resources conserved) if the object is reused or recycled. Additionally, list potential items that the object can be recycled into. Provide images of these items if available.

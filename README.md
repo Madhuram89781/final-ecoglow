@@ -59,6 +59,13 @@ EcoGlow is a waste management application that helps users identify recyclable i
 3. Configure the following environment variables in Vercel:
    - `GROQ_API_KEY`: Your Groq API key
    - `JWT_SECRET`: A secure secret for JWT token generation
+   
+   **For Google Cloud Vision API credentials, you have two options:**
+   
+   **Option 1 (Recommended):** Add a single environment variable with the entire JSON content:
+   - `GOOGLE_APPLICATION_CREDENTIALS_JSON`: The entire JSON content of your Google Cloud service account key file
+   
+   **Option 2:** Add individual credential fields:
    - `GOOGLE_PROJECT_ID`: Your Google Cloud project ID
    - `GOOGLE_PRIVATE_KEY_ID`: Your Google Cloud private key ID
    - `GOOGLE_PRIVATE_KEY`: Your Google Cloud private key (make sure to replace newlines with \n)
@@ -83,7 +90,9 @@ EcoGlow is a waste management application that helps users identify recyclable i
 - The application is configured to automatically detect whether it's running in development or production mode
 - In development mode, it uses local credentials and fallback values
 - In production mode, it uses environment variables set in Vercel
-- Make sure to properly format the `GOOGLE_PRIVATE_KEY` environment variable, replacing newlines with \n
+- For Google Cloud credentials, the application will first try to use the `GOOGLE_APPLICATION_CREDENTIALS_JSON` environment variable
+- If that's not available, it will try to use the individual credential environment variables
+- If using individual variables, make sure to properly format the `GOOGLE_PRIVATE_KEY` environment variable, replacing newlines with \n
 ## Security Considerations
 
 - Never commit sensitive credentials to your repository

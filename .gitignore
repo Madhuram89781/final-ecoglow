@@ -1,10 +1,27 @@
+# Dependencies
 node_modules/
+
+# Environment variables
 .env
+
+# Vercel
 .vercel
+
+# Credentials and sensitive files
+credentials.json
+service-account*.json
 backend/final.json
-*.json
-credentials.json
-service-account*.json
-*.json
-credentials.json
-service-account*.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

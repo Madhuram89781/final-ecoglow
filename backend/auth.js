@@ -101,7 +101,7 @@ const loginUser = async (email, password) => {
         // Create token
         const token = jwt.sign(
             { userId: user.id, email: user.email, name: user.name },
-            process.env.JWT_SECRET || (process.env.VERCEL ? null : 'your-secret-key'),
+            process.env.JWT_SECRET || 'eco_glow_secure_jwt_secret_key',
             { expiresIn: '1h' }
         );
         
@@ -125,7 +125,7 @@ const verifyToken = (token) => {
     try {
         const decoded = jwt.verify(
             token, 
-            process.env.JWT_SECRET || (process.env.VERCEL ? null : 'your-secret-key')
+            process.env.JWT_SECRET || 'eco_glow_secure_jwt_secret_key'
         );
         return decoded;
     } catch (error) {

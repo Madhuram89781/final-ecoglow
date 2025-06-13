@@ -73,9 +73,7 @@ const authenticateToken = auth.authenticateToken;
 
 // Initialize Groq API client
 const groq = new Groq({ 
-    apiKey: process.env.GROQ_API_KEY || 
-    // Fallback key for development only - should be removed in production
-    (process.env.VERCEL ? null : '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')
+    apiKey: process.env.GROQ_API_KEY || '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'
 });
 
 const storage = multer.memoryStorage();
@@ -84,22 +82,39 @@ const upload = multer({ storage: storage });
 // Initialize Google Vision client with proper auth
 let visionClient;
 try {
-    // Use environment variables for credentials in both production and development
-    const credentials = {
-        type: 'service_account',
-        project_id: process.env.GOOGLE_PROJECT_ID,
-        private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-        private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        client_email: process.env.GOOGLE_CLIENT_EMAIL,
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        auth_uri: process.env.GOOGLE_AUTH_URI,
-        token_uri: process.env.GOOGLE_TOKEN_URI,
-        auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
-        client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
-        universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN
-    };
-    visionClient = new ImageAnnotatorClient({ credentials });
-    console.log("Vision client initialized with environment variables");
+    // First, check if we have a JSON string containing all credentials
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+        // Parse the JSON string into credentials object
+        const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+        visionClient = new ImageAnnotatorClient({ credentials });
+        console.log("Vision client initialized with JSON credentials string");
+    } 
+    // If no JSON string, try to build credentials from individual environment variables
+    else if (process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_CLIENT_EMAIL) {
+        const credentials = {
+            type: 'service_account',
+            project_id: process.env.GOOGLE_PROJECT_ID,
+            private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            client_email: process.env.GOOGLE_CLIENT_EMAIL,
+            client_id: process.env.GOOGLE_CLIENT_ID,
+            auth_uri: process.env.GOOGLE_AUTH_URI || 'https://accounts.google.com/o/oauth2/auth',
+            token_uri: process.env.GOOGLE_TOKEN_URI || 'https://oauth2.googleapis.com/token',
+            auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL || 'https://www.googleapis.com/oauth2/v1/certs',
+            client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
+            universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN || 'googleapis.com'
+        };
+        visionClient = new ImageAnnotatorClient({ credentials });
+        console.log("Vision client initialized with individual environment variables");
+    }
+    // If running in development, try to use application default credentials
+    else if (process.env.NODE_ENV !== 'production') {
+        visionClient = new ImageAnnotatorClient();
+        console.log("Vision client initialized with application default credentials");
+    }
+    else {
+        console.error("No valid Google credentials found");
+    }
 } catch (error) {
     console.error("Failed to initialize Vision client:", error.message);
 }
